@@ -3,7 +3,6 @@
 @section('content')
     <div class="container">
         <h1>포럼 글 목록</h1> <hr/>
-
     <ul>
         @forelse($articles as $article)
         <li>
