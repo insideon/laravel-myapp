@@ -55,7 +55,7 @@ class ArticlesController extends Controller
     public function show($id)
     {
         $article = \App\Article::findOrFail($id);
-        dd($article);
+        debug($article->toArray());
         return $article->toArray();
     }
 
