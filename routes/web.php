@@ -9,11 +9,25 @@ Route::get('/home', 'HomeController@index');
 
 Route::resource('articles', 'ArticlesController');
 
-//14.1. 이벤트 시스템 작동 기본 원리
-//Event::listen('article.created', function ($article) {
-//    var_dump('이벤트를 받았습니다. 받은 데이터(상태)는 다음과 같습니다.');
-//    var_dump($article->toArray());
-//});
+Route::get('mail', function () {
+    $article = App\Article::with('user')->find(1);
+    return Mail::send(
+        // ['text' => 'emails.articles.created-text'],
+        'emails.articles.created',
+        compact('article'),
+        function ($message) use ($article) {
+            $message->to('kjy0939@gmail.com');
+            $message->subject('새 글이 등록되었습니다 -' . $article->title);
+        }
+        // function ($message) use ($article){
+        //     $message->from('yours1@domain', 'Your Name');
+        //     $message->to(['yours2@domain', 'yours3@domain']);
+        //     $message->subject('새 글이 등록되었습니다 -' . $article->title);
+        //     $message->cc('yours4@domain');
+        //     $message->attach(storage_path('elephant.png'));
+        // }
+    );
+});
 
 //DB::listen(function ($query) {
 //    var_dump($query->sql);
