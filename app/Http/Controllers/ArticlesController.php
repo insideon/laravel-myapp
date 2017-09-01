@@ -56,7 +56,7 @@ class ArticlesController extends Controller
     {
         $article = \App\Article::findOrFail($id);
         debug($article->toArray());
-        return $article->toArray();
+        return view('articles.show', compact('article'));
     }
 
     /**
