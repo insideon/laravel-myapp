@@ -47,11 +47,11 @@ class Handler extends ExceptionHandler
         if (app()->environment('production')) {
             $statusCode = 400;
             $title = '죄송합니다. :(';
-            $description = '에러가발생했습니다.';
+            $description = '에러가 발생했습니다.';
             if ($exception instanceof \Illuminate\Database\Eloquent\ModelNotFoundException
                 or $exception instanceof \Symfony\Component\HttpKernel\Exception\ NotFoundHttpException) {
                 $statusCode = 404;
-                $description = $exception->getMessage() ?: '요청하신페이지가없습니다.';
+                $description = $exception->getMessage() ?: '요청하신 페이지를 찾을 수 없습니다.';
             }
             return response(view('errors.notice', [
                 'title' => $title,
