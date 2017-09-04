@@ -1,82 +1,83 @@
-{{--
-<!--코드 5-1-->
-<h1>
-  {{  $greeting or 'Hello' }}
-  {{  $name or '' }}
-</h1>
---}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-{{--
-<!--코드 5-5-->
-@if($itemCount = count($items))
-  <p>{{ $itemCount }} 종류의 과일이 있습니다.</p>
-  <ul>
-    <!--코드 5-6-->
-    @foreach($items as $item) \
-      <li>{{ $item }}</li>
-    @endforeach
-  </ul>
-@else
-  <p>엥~ 아무것도 없는데요!</p>
-@endif
---}}
+  <title>Laravel</title>
 
-{{--
-<!--코드 5-7-->
-@php
-  $items = [];
-@endphp
-<ul>
-  @forelse($items as $item)
-    <li>{{ $item }}</li>
-  @empty
-    <li>엥~ 아무것도 없는데요!</li>
-  @endforelse
-</ul>
---}}
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
 
-{{--
-<!--코드 5-9-->
-@extends('layouts.master')
-@section('content')
-  <p>저는 자식 뷰의 'content' 섹션입니다.</p>
-@endsection
---}}
-
-{{--
-<!--코드 5-10-->
-@extends('layouts.master')
-@section('style')
+  <!-- Styles -->
   <style>
-    body {background: green; color: white;}
+    html, body {
+      background-color: #fff;
+      color: #636b6f;
+      font-family: 'Raleway', sans-serif;
+      font-weight: 100;
+      height: 100vh;
+      margin: 0;
+    }
+    .full-height {
+      height: 100vh;
+    }
+    .flex-center {
+      align-items: center;
+      display: flex;
+      justify-content: center;
+    }
+    .position-ref {
+      position: relative;
+    }
+    .top-right {
+      position: absolute;
+      right: 10px;
+      top: 18px;
+    }
+    .content {
+      text-align: center;
+    }
+    .title {
+      font-size: 84px;
+    }
+    .links > a {
+      color: #636b6f;
+      padding: 0 25px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .1rem;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+    .m-b-md {
+      margin-bottom: 30px;
+    }
   </style>
-@endsection
-@section('content')
-  <p>저는 자식 뷰의 'content' 섹션입니다.</p>
-@endsection
-@section('script')
-  <script>
-    alert("저는 자식 뷰의 'script' 섹션입니다."); </script>
-@endsection
---}}
+</head>
+<body>
+<div class="flex-center position-ref full-height">
+  @if (Route::has('login'))
+    <div class="top-right links">
+      <a href="{{ url('/login') }}">Login</a>
+      <a href="{{ url('/register') }}">Register</a>
+    </div>
+  @endif
 
-{{--
-<!--코드 5-12-->
-@extends('layouts.master')
-@section('content')
-  @include('partials.footer')
-@endsection
---}}
+  <div class="content">
+    <div class="title m-b-md">
+      Laravel
+    </div>
 
-<!--코드 5-13-->
-@extends('layouts.master')
-
-@section('content')
-  @include('partials.footer')
-@endsection
-
-@section('script')
-  <script>
-    alert("저는 자식 뷰의 'script' 섹션입니다.");
-  </script>
-@endsection
+    <div class="links">
+      <a href="https://laravel.com/docs">Documentation</a>
+      <a href="https://laracasts.com">Laracasts</a>
+      <a href="https://laravel-news.com">News</a>
+      <a href="https://forge.laravel.com">Forge</a>
+      <a href="https://github.com/laravel/laravel">GitHub</a>
+    </div>
+  </div>
+</div>
+</body>
+</html>
