@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Notifications\Notifiable;
+
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
@@ -15,7 +16,11 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'confirm_code', 'activated'
+        'name',
+        'email',
+        'password',
+        'confirm_code',
+        'activated',
     ];
 
     /**
@@ -24,7 +29,9 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token', 'confirm_code'
+        'password',
+        'remember_token',
+        'confirm_code',
     ];
 
     /**
@@ -46,8 +53,13 @@ class User extends Authenticatable
     ];
 
     /* Relationships */
-    public function articles()
-    {
+    public function articles() {
         return $this->hasMany(Article::class);
+    }
+
+    /* Query Scopes */
+    public function scopeSocialUser(\Illuminate\Database\Eloquent\Builder $query, $email)
+    {
+        return $query->wehreEmail($email)->whereNull('password');
     }
 }

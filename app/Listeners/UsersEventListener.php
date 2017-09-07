@@ -3,7 +3,9 @@
 namespace App\Listeners;
 
 use Illuminate\Auth\Events\Login;
+
 use Illuminate\Queue\InteractsWithQueue;
+
 use Illuminate\Contracts\Queue\ShouldQueue;
 
 class UsersEventListener
@@ -17,7 +19,6 @@ class UsersEventListener
     public function handle(Login $event)
     {
         $event->user->last_login = \Carbon\Carbon::now();
-
         return $event->user->save();
     }
 
@@ -34,7 +35,6 @@ class UsersEventListener
             \App\Events\UserCreated::class,
             __CLASS__ . '@onUserCreated'
         );
-
         // 코드 23-30
         $events->listen(
             \App\Events\PasswordRemindCreated::class,
@@ -50,7 +50,6 @@ class UsersEventListener
     public function onUserCreated(\App\Events\UserCreated $event)
     {
         $user = $event->user;
-
         \Mail::send(
             'emails.auth.confirm',
             compact('user'),

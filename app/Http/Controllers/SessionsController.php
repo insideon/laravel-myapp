@@ -38,17 +38,13 @@ class SessionsController extends Controller
             'email' => 'required|email',
             'password' => 'required|min:6',
         ]);
-
         if (! auth()->attempt($request->only('email', 'password'), $request->has('remember'))) {
             return $this->respondError('이메일 또는 비밀번호가 맞지 않습니다.');
         }
-
         if (! auth()->user()->activated) {
             auth()->logout();
-
             return $this->respondError('가입확인해 주세요.');
         }
-
         return $this->respondCreated(auth()->user()->name . '님, 환영합니다.');
     }
 
@@ -66,7 +62,6 @@ class SessionsController extends Controller
     }
 
     /* Helpers */
-
     /**
      * Make an error response.
      *
@@ -76,7 +71,6 @@ class SessionsController extends Controller
     protected function respondError($message)
     {
         flash()->error($message);
-
         return back()->withInput();
     }
 
@@ -89,7 +83,6 @@ class SessionsController extends Controller
     protected function respondCreated($message)
     {
         flash($message);
-
         return redirect()->intended('home');
     }
 }

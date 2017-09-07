@@ -180,6 +180,7 @@ return [
         Barryvdh\Debugbar\ServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
         Laracasts\Flash\FlashServiceProvider::class,
+        Laravel\Socialite\SocialiteServiceProvider::class,
 
     ],
 
@@ -232,6 +233,7 @@ return [
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
         'Image' => Intervention\Image\Facades\Image::class,
         'Flash' => Laracasts\Flash\Flash::class,
+        'Socialite' => Laravel\Socialite\Facades\Socialite::class,
 
     ],
 
