@@ -11,6 +11,8 @@ class Article extends Model
         'content',
     ];
 
+    protected $with = ['user'];
+
     /* Relationships */
     public function user() {
         return $this->belongsTo(User::class);
