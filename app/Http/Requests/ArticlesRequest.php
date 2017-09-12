@@ -27,6 +27,8 @@ class ArticlesRequest extends FormRequest
             'title' => ['required'],
             'tags' => ['required', 'array'],
             'content' => ['required', 'min:10'],
+            'files' => ['array'],
+            'files.*' => ['mimes:jpg,png,zip,tar', 'max:30000'],
         ];
     }
 
