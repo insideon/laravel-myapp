@@ -46,8 +46,8 @@
 @section('script')
   @parent
   <script>
-    var form = $('form').first();
-      dropzone  = $('div.dropzone');
+    var form = $('form').first(),
+      dropzone  = $('div.dropzone'),
       dzControl = $('label[for=my-dropzone]>small');
     /* Dropzone */
     Dropzone.autoDiscover = false;

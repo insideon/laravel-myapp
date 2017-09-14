@@ -86,7 +86,9 @@ class ArticlesController extends Controller
      */
     public function show(\App\Article $article)
     {
-        return view('articles.show', compact('article'));
+        $comments = $article->comments()->with('replies')->whereNull('parent_id')->latest()->get();
+
+        return view('articles.show', compact('article', 'comments'));
     }
 
     /**

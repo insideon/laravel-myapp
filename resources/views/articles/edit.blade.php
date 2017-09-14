@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="page-header">
+<div class="page-header" style="display: none">
     <h4>
         <a href="{{ route('articles.index') }}">
             포럼
