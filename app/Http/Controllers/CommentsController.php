@@ -28,6 +28,8 @@ class CommentsController extends Controller
             ['user_id' => $request->user()->id]
         ));
 
+        event(new \App\Events\CommentsEvent($comment));
+
         flash()->success('작성하신 댓글을 저장했습니다.');
 
         return redirect(
@@ -60,9 +62,14 @@ class CommentsController extends Controller
      */
     public function destroy(\App\Comment $comment)
     {
-        $comment->delete();
+        if ($comment->replies->count() > 0) {
+            $comment->delete();
+        } else {
+            $comment->votes()->delete();
+            $comment->forceDelete();
+        }
 
-        return response()->json([], 204, [], JSON_PRETTY_PRINT);
+        return response()->json([], 204);
     }
 
     /**

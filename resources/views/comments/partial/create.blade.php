@@ -1,4 +1,18 @@
-<div class="media media__create__comment {{ isset($parentId) ? 'sub' : 'top' }}" style="display: none">
+<div class="media media__create__comment {{ isset($parentId) ? 'sub' : 'top' }}" >
+
+    <style type="text/css">
+        div.media.media__create__comment.top:nth-child(1) {
+            display: block;
+        }
+        div.media.media__create__comment.sub {
+            display: none;
+        }
+
+        .form-horizontal .form-group {
+            margin-left: 0px;
+            margin-right: 0px;
+        }
+    </style>
 
     @include('users.partial.avatar', ['user' => $currentUser, 'size' => 32])
 

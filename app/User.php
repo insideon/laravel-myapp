@@ -60,7 +60,7 @@ class User extends Authenticatable
     /* Query Scopes */
     public function scopeSocialUser(\Illuminate\Database\Eloquent\Builder $query, $email)
     {
-        return $query->wehreEmail($email)->whereNull('password');
+        return $query->whereEmail($email)->whereNull('password');
     }
 
     public function isAdmin()

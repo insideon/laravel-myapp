@@ -11,7 +11,9 @@ class Article extends Model
         'content',
     ];
 
-    protected $with = ['user'];
+    protected $with = [
+        'user',
+    ];
 
     /* Relationships */
     public function user()
@@ -32,5 +34,10 @@ class Article extends Model
     public function comments()
     {
         return $this->morphMany(Comment::class, 'commentable');
+    }
+
+    public function getCommentCountAttribute()
+    {
+        return (int) $this->comments->count();
     }
 }

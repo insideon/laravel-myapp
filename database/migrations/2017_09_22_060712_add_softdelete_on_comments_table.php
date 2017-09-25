@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddConfirmCodeColumnOnUsersTable extends Migration
+class AddSoftdeleteOnCommentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,8 @@ class AddConfirmCodeColumnOnUsersTable extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('confirm_code', 60)->nullable();
-            $table->boolean('activated')->default(0);
+        Schema::table('comments', function (Blueprint $table) {
+            $table->softDeletes();
         });
     }
 
@@ -26,7 +25,8 @@ class AddConfirmCodeColumnOnUsersTable extends Migration
      */
     public function down()
     {
-        $table->dropColumn('confirm_code');
-        $table->dropColumn('activated');
+        Schema::table('comments', function (Blueprint $table) {
+            $table->dropSoftDeletes();
+        });
     }
 }
