@@ -31,7 +31,7 @@
 
             <div class="text-right">
                 <button type="submit" class="btn btn-primary btn-sm">
-                    전송하기
+                    {{ trans('forum.comments.store') }}
                 </button>
             </div>
         </form>

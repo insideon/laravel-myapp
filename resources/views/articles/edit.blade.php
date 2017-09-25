@@ -1,19 +1,19 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="page-header" style="display: none">
+<div class="page-header">
     <h4>
         <a href="{{ route('articles.index') }}">
-            포럼
+            {{ trans('forum.title') }}
         </a>
         <small>
-            / 글 수정
+            / {{ trans('forum.articles.edit') }}
             / {{ $article->title }}
         </small>
     </h4>
 </div>
 
-<form action="{{ route('articles.update', $article->id) }}" method="POST">
+<form action="{{ route('articles.update', $article->id) }}" method="POST" enctype="multipart/form-data" class="form__article">
     {!! csrf_field() !!}
     {!! method_field('PUT') !!}
 
@@ -21,7 +21,7 @@
 
     <div class="form-group text-center">
         <button type="submit" class="btn btn-primary">
-            수정하기
+            {{ trans('forum.articles.update') }}
         </button>
     </div>
 </form>

@@ -94,3 +94,9 @@ Route::post('auth/reset', [
     'as' => 'reset.store',
     'uses' => 'PasswordsController@postReset',
 ]);
+
+/* 언어선택 */
+Route::get('locale', [
+    'as' => 'locale',
+    'uses' => 'WelcomeController@locale',
+]);

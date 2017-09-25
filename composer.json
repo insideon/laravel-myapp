@@ -14,7 +14,8 @@
         "laracasts/flash": " 2.0.*",
         "laravel/framework": "5.4.*",
         "laravel/socialite": "2.0.*",
-        "laravel/tinker": "~1.0"
+        "laravel/tinker": "~1.0",
+        "maknz/slack": "1.*"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
