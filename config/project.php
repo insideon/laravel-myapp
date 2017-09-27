@@ -17,7 +17,8 @@ return [
     | 프로젝트 기본 정보
     |--------------------------------------------------------------------------
     */
-    'url' => env('APP_URL', 'http://localhost:8000'),
+    'url' => env('APP_URL', 'http://localhost:80'),
+    'api_domain' => env('API_DOMAIN', 'http://api.insideon.cf'),
     'description' => '',
 
     /*
