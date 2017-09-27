@@ -11,7 +11,9 @@ class ArticlesController extends ParentController
 {
     public function __construct()
     {
-        //
+        parent::__construct();
+        $this->middleware = [];
+        $this->middleware('jwt.auth', ['except' => ['index', 'show', 'tags']]);
     }
     public function tags() {
         return \App\Tag::all();

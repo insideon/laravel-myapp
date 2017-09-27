@@ -5,6 +5,18 @@ Route::group([
     'namespace' => 'Api',
     'as' => 'api.',
 ], function () {
+    /* 토큰 교환 요청 */
+    Route::post('auth/login', [
+        'as' => 'sessions.store',
+        'uses' => 'SessionsController@store',
+    ]);
+
+    Route::post('auth/refresh', [
+        'middleware' => 'jwt.refresh',
+        'as' => 'sessions.refresh',
+        function () {}
+    ]);
+
     /* api.v1 */
     Route::group([
         'prefix' => 'v1',
