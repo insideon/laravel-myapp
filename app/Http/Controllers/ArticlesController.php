@@ -51,7 +51,7 @@ class ArticlesController extends Controller implements Cacheable
             $query = $query->whereRaw($raw, [$keyword]);
         }
         $articles = $this->cache($cacheKey, 5, $query, 'paginate', 3);
-        return $this->respondCollection($articles);
+        return $this->respondCollection($articles, $cacheKey);
     }
 
     /**
@@ -99,8 +99,11 @@ class ArticlesController extends Controller implements Cacheable
      */
     public function show(Article $article)
     {
-        $article->view_count += 1;
-        $article->save();
+        if (! is_api_domain()) {
+            $article->view_count += 1;
+            $article->save();
+        }
+
         $comments = $article->comments()
                             ->with('replies')
                             ->withTrashed()

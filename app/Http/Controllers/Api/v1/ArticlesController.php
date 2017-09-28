@@ -3,20 +3,32 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Article;
+use App\EtagTrait;
 use App\Http\Controllers\ArticlesController as ParentController;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 
 class ArticlesController extends ParentController
 {
+    use EtagTrait;
+    /**
+     * ArticlesController constructor.
+     */
     public function __construct()
     {
+//        HTTP 기본 인증으로 인증을 받은 후, 부모 컨트롤러 생성자의 인증 미들웨어를 타게 되므로
+//        아래 로직은 정상적으로 작동해야 한다. 프레임워크 버그로 추정된다.
+//        $this->middleware('auth.basic.once', ['except' => ['index', 'show', 'tags']]);
+//        parent::__construct();
         parent::__construct();
         $this->middleware = [];
         $this->middleware('jwt.auth', ['except' => ['index', 'show', 'tags']]);
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
     public function tags() {
-        // return \App\Tag::all();
         return json()->withCollection(
             \App\Tag::all(),
             new \App\Transformers\TagTransformer
@@ -25,14 +37,37 @@ class ArticlesController extends ParentController
 
     /**
      * @param LengthAwarePaginator $articles
+     * @param string|null $cacheKey
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function respondCollection(LengthAwarePaginator $articles)
+    protected function respondCollection(LengthAwarePaginator $articles, $cacheKey = null)
     {
-        // return $articles->toJson(JSON_PRETTY_PRINT);
-        // return (new \App\Transformers\ArticleTransformerBasic)->withPagination($articles);
-        return json()->withPagination(
+        $reqEtag = request()->getETags();
+        $genEtag = $this->etags($articles, $cacheKey);
+        if (config('project.etag') and isset($reqEtag[0]) and $reqEtag[0] === $genEtag) {
+            return json()->notModified();
+        }
+        return json()->setHeaders(['Etag' => $genEtag])->withPagination(
             $articles,
+            new \App\Transformers\ArticleTransformer
+        );
+    }
+
+    /**
+     * @param \App\Article $article
+     * @param \Illuminate\Database\Eloquent\Collection $comments
+     * @return string
+     */
+    protected function respondInstance(Article $article, Collection $comments)
+    {
+        $cacheKey = cache_key('articles.'.$article->id);
+        $reqEtag = request()->getETags();
+        $genEtag = $this->etag($article, $cacheKey);
+        if (config('project.etag') and isset($reqEtag[0]) and $reqEtag[0] === $genEtag) {
+            return json()->notModified();
+        }
+        return json()->setHeaders(['Etag' => $genEtag])->withItem(
+            $article,
             new \App\Transformers\ArticleTransformer
         );
     }
@@ -43,32 +78,9 @@ class ArticlesController extends ParentController
      */
     protected function respondCreated($article)
     {
-//         return response()->json(
-//             ['success' => 'created'],
-//             201,
-// //            책에서는 show 메서드를 수록하지 않았으므로 아래 코드를 오류를 낸다.
-// //            우리 소스코드에서는 show 메서드를 포함하고 있으므로 주석해제해도 작동한다.
-// //            ['Location' => route('api.v1.articles.show', $article->id)],
-//             JSON_PRETTY_PRINT
-//         );
         return json()->setHeaders([
-            'Location' => route('api.v1.articles.show', $article->id)
+            'Location' => route('api.v1.articles.show', $article->id),
         ])->created('created');
-    }
-
-    /**
-     * @param \App\Article $article
-     * @param \Illuminate\Database\Eloquent\Collection $comments
-     * @return string
-     */
-    protected function respondInstance(Article $article, Collection $comments)
-    {
-        // return $article->toJson(JSON_PRETTY_PRINT);
-        // return (new \App\Transformers\ArticleTransformerBasic)->withItem($article);
-        return json()->withItem(
-            $article,
-            new \App\Transformers\ArticleTransformer
-        );
     }
 
     /**
@@ -77,9 +89,6 @@ class ArticlesController extends ParentController
      */
     protected function respondUpdated(Article $article)
     {
-        // return response()->json([
-        //     'success' => 'updated'
-        // ], 200, [], JSON_PRETTY_PRINT);
-        return json()->>success('updated');
+        return json()->success('updated');
     }
 }
