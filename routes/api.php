@@ -4,6 +4,7 @@ Route::group([
     'domain' => config('project.api_domain'),
     'namespace' => 'Api',
     'as' => 'api.',
+    'middleware' => ['cors']
 ], function () {
     /* 토큰 교환 요청 */
     Route::post('auth/login', [
@@ -22,6 +23,7 @@ Route::group([
         'prefix' => 'v1',
         'namespace' => 'v1',
         'as' => 'v1.',
+        'middleware' => ['throttle:60,1']
     ], function () {
         /* 환영 메시지 */
         Route::get('/', [
